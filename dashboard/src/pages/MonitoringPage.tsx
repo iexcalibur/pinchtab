@@ -161,17 +161,25 @@ export default function MonitoringPage() {
     <ErrorBoundary>
       <div className="flex flex-1 flex-col gap-4 overflow-auto p-4">
         {/* Chart - always show, even with no instances (displays server metrics) */}
-        <TabsChart
-          data={tabsChartData || []}
-          memoryData={memoryEnabled ? memoryChartData : undefined}
-          serverData={serverChartData || []}
-          instances={runningInstances.map((i) => ({
-            id: i.id,
-            profileName: i.profileName || "Unknown",
-          }))}
-          selectedInstanceId={selectedId}
-          onSelectInstance={setSelectedId}
-        />
+        <ErrorBoundary
+          fallback={
+            <div className="flex h-[200px] items-center justify-center rounded-lg border border-destructive/50 bg-bg-surface text-sm text-destructive">
+              Chart crashed - check console
+            </div>
+          }
+        >
+          <TabsChart
+            data={tabsChartData || []}
+            memoryData={memoryEnabled ? memoryChartData : undefined}
+            serverData={serverChartData || []}
+            instances={runningInstances.map((i) => ({
+              id: i.id,
+              profileName: i.profileName || "Unknown",
+            }))}
+            selectedInstanceId={selectedId}
+            onSelectInstance={setSelectedId}
+          />
+        </ErrorBoundary>
 
         {instances.length === 0 && (
           <div className="flex flex-1 items-center justify-center">
