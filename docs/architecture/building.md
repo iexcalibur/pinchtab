@@ -237,7 +237,8 @@ All dev scripts are accessible through `./pdev`:
 
 ```bash
 ./pdev              # Interactive picker (uses gum if installed, numbered fallback)
-./pdev check        # Run directly by name
+./pdev check        # Run a command directly
+./pdev test unit    # Subcommands supported
 ./pdev --help       # List all commands
 ```
 
@@ -247,12 +248,16 @@ All dev scripts are accessible through `./pdev`:
 
 | Command | Description |
 |---------|-------------|
-| `check` | Run pre-push checks (format, vet, build, test, lint) |
-| `dev` | Build & run with dashboard |
-| `doctor` | Verify & setup dev environment |
-| `dashboard` | Build React dashboard |
-| `security` | Run gosec security scan |
-| `docs` | Check docs JSON structure |
+| `check` | All checks (Go + Dashboard) |
+| `check go` | Go checks only |
+| `check dashboard` | Dashboard checks only |
+| `check security` | Gosec security scan |
+| `check docs` | Validate docs JSON |
+| `test` | All tests (unit + integration) |
+| `test unit` | Unit tests only |
+| `test integration` | Integration tests only |
+| `build` | Build & run (default) |
+| `doctor` | Setup dev environment |
 | `hooks` | Install git hooks |
 
 For the fancy interactive picker, install [gum](https://github.com/charmbracelet/gum): `brew install gum`

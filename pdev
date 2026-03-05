@@ -194,5 +194,9 @@ if [ $# -gt 0 ]; then
   esac
 fi
 
-# No args → default to build
-run_command "build"
+# No args → interactive picker
+if command -v gum &>/dev/null; then
+  pick_with_gum
+else
+  pick_with_select
+fi

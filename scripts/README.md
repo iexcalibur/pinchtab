@@ -2,7 +2,18 @@
 
 Development and CI scripts for PinchTab.
 
-> **Tip:** Use `./pdev` from the repo root for an interactive command picker (or `./pdev <command>` to run directly).
+> **Tip:** Use `./pdev` from the repo root for an interactive command picker, or `./pdev <command>` to run directly.
+
+## Quality
+
+| Script | Purpose |
+|--------|---------|
+| `check.sh` | Go pre-push checks (format, vet, build, test, lint) |
+| `check-dashboard.sh` | Dashboard checks (typecheck, eslint, prettier, vitest) |
+| `check-gosec.sh` | Security scan with gosec (reproduces CI security job) |
+| `check-docs-json.sh` | Validate `docs/index.json` structure |
+| `test.sh` | Go test runner with progress (unit, integration, or all) |
+| `pre-commit` | Git pre-commit hook (format + lint) |
 
 ## Build & Run
 
@@ -10,15 +21,6 @@ Development and CI scripts for PinchTab.
 |--------|---------|
 | `build-dashboard.sh` | Generate TS types (tygo) + build React dashboard + copy to Go embed |
 | `dev.sh` | Full build (dashboard + Go) and run |
-
-## Quality
-
-| Script | Purpose |
-|--------|---------|
-| `check.sh` | Local pre-push checks (mirrors CI: gofmt, vet, build, test, lint, integration) |
-| `check-gosec.sh` | Security scan with gosec (reproduces CI security job) |
-| `check-docs-json.sh` | Validate `docs/index.json` structure |
-| `pre-commit` | Git pre-commit hook (format + lint) |
 
 ## Setup
 
