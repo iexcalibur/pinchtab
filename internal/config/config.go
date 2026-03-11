@@ -421,8 +421,10 @@ func homeDir() string {
 // - Linux: ~/.config/pinchtab (or $XDG_CONFIG_HOME/pinchtab)
 // - Windows: %APPDATA%\pinchtab
 //
-// For backwards compatibility, if ~/.pinchtab/config.json exists and the new location
-// doesn't have a config.json, it returns ~/.pinchtab (allowing seamless migration).
+// For backwards compatibility:
+// 1. If ~/.pinchtab/config.json exists (and new location doesn't) → use legacy
+// 2. If ~/.pinchtab dir exists (and new dir doesn't) → use legacy (for init)
+// 3. Otherwise → use new XDG path
 func userConfigDir() string {
 	home := homeDir()
 	legacyPath := filepath.Join(home, ".pinchtab")
@@ -436,13 +438,18 @@ func userConfigDir() string {
 
 	newPath := filepath.Join(configDir, "pinchtab")
 
-	// Backwards compatibility: check for config FILE, not just directory.
-	// This handles the case where both directories exist (e.g., ~/.pinchtab for binary
-	// and ~/.config/pinchtab for profiles) but only the legacy has a config.json.
+	// Priority 1: Check for config FILE (handles case where both dirs exist
+	// but only legacy has config.json — the issue #224 scenario)
 	legacyConfig := filepath.Join(legacyPath, "config.json")
 	newConfig := filepath.Join(newPath, "config.json")
 
 	if fileExists(legacyConfig) && !fileExists(newConfig) {
+		return legacyPath
+	}
+
+	// Priority 2: Check for DIRECTORY (handles init scenario where
+	// legacy dir exists from npm install but no config yet)
+	if dirExists(legacyPath) && !dirExists(newPath) {
 		return legacyPath
 	}
 
