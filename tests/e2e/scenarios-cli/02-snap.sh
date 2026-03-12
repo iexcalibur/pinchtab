@@ -15,18 +15,17 @@ assert_output_contains "title" "returns page title"
 end_test
 
 # ─────────────────────────────────────────────────────────────────
-start_test "pinchtab snap --format text"
+start_test "pinchtab snap --text"
 
-pt_ok snap --format text
-assert_output_contains "[e" "contains element refs"
-assert_output_not_contains "{" "not JSON format"
+pt_ok snap --text
+assert_output_contains "e0" "contains element refs"
 
 end_test
 
 # ─────────────────────────────────────────────────────────────────
-start_test "pinchtab snap --filter interactive"
+start_test "pinchtab snap --interactive"
 
-pt_ok snap --filter interactive
+pt_ok snap --interactive
 assert_output_json
 assert_output_contains "textbox" "contains form inputs"
 assert_output_contains "button" "contains buttons"

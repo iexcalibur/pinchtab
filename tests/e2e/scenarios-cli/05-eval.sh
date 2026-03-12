@@ -24,18 +24,18 @@ end_test
 # ─────────────────────────────────────────────────────────────────
 start_test "pinchtab eval (JSON result)"
 
-pt_ok eval "JSON.stringify({a: 1, b: 2})"
+pt_ok eval 'JSON.stringify({a: 1, b: 2})'
 assert_output_contains '"a"' "returns JSON object"
 
 end_test
 
 # ─────────────────────────────────────────────────────────────────
-start_test "pinchtab eval --tab <id>"
+start_test "pinchtab tabs eval <tabId> <expression>"
 
 pt_ok nav "${FIXTURES_URL}/buttons.html"
 TAB_ID=$(echo "$PT_OUT" | jq -r '.tabId')
 
-pt_ok eval --tab "$TAB_ID" "document.title"
+pt_ok tabs eval "$TAB_ID" "document.title"
 assert_output_contains "Button" "evaluates in correct tab"
 
 end_test

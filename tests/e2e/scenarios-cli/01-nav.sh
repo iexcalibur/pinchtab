@@ -21,14 +21,14 @@ pt_fail nav "not-a-valid-url"
 end_test
 
 # ─────────────────────────────────────────────────────────────────
-start_test "pinchtab nav --tab <id>"
+start_test "pinchtab tabs nav <tabId> <url>"
 
 # First navigate to get a tab
 pt_ok nav "${FIXTURES_URL}/index.html"
 TAB_ID=$(echo "$PT_OUT" | jq -r '.tabId')
 
-# Navigate same tab to different page
-pt_ok nav --tab "$TAB_ID" "${FIXTURES_URL}/form.html"
+# Navigate same tab to different page using tabs subcommand
+pt_ok tabs nav "$TAB_ID" "${FIXTURES_URL}/form.html"
 assert_output_contains "form.html" "navigated to form.html"
 
 end_test
