@@ -4,6 +4,24 @@ permissions:
   contents: read
 
 on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'LICENSE'
+      - '.gitignore'
+      - 'skill/**'
+      - 'plugin/**'
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'LICENSE'
+      - '.gitignore'
+      - 'skill/**'
+      - 'plugin/**'
   workflow_dispatch:
     inputs:
       branch:
@@ -22,6 +40,7 @@ jobs:
   e2e:
     name: E2E Curl Tests
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     timeout-minutes: 15
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true

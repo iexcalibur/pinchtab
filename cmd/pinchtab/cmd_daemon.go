@@ -66,7 +66,7 @@ func handleDaemonCommand(_ *config.RuntimeConfig, subcommand string) {
 
 	switch subcommand {
 	case "install":
-		configPath, _, _, err := ensureOnboardConfig(false)
+		configPath, _, _, err := ensureDaemonConfig(false)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, cli.StyleStderr(cli.ErrorStyle, fmt.Sprintf("daemon install failed: %v", err)))
 			os.Exit(1)
@@ -201,7 +201,7 @@ func printDaemonManagerResult(message string, err error) {
 	}
 }
 
-func ensureOnboardConfig(force bool) (string, *config.RuntimeConfig, onboardConfigStatus, error) {
+func ensureDaemonConfig(force bool) (string, *config.RuntimeConfig, configBootstrapStatus, error) {
 	_, configPath, err := config.LoadFileConfig()
 	if err != nil {
 		return "", nil, "", err
@@ -218,9 +218,9 @@ func ensureOnboardConfig(force bool) (string, *config.RuntimeConfig, onboardConf
 		if err := config.SaveFileConfig(&defaults, configPath); err != nil {
 			return "", nil, "", err
 		}
-		status := onboardConfigCreated
+		status := configCreated
 		if exists {
-			status = onboardConfigRecovered
+			status = configRecovered
 		}
 		return configPath, config.Load(), status, nil
 	}
@@ -228,22 +228,22 @@ func ensureOnboardConfig(force bool) (string, *config.RuntimeConfig, onboardConf
 	// If file exists and not forced, check if it needs recovery to secure baseline
 	_, changed, err := cli.RestoreSecurityDefaults()
 	if err != nil {
-		return configPath, config.Load(), onboardConfigVerified, err
+		return configPath, config.Load(), configVerified, err
 	}
-	status := onboardConfigVerified
+	status := configVerified
 	if changed {
-		status = onboardConfigRecovered
+		status = configRecovered
 	}
 
 	return configPath, config.Load(), status, nil
 }
 
-type onboardConfigStatus string
+type configBootstrapStatus string
 
 const (
-	onboardConfigCreated   onboardConfigStatus = "created"
-	onboardConfigRecovered onboardConfigStatus = "recovered"
-	onboardConfigVerified  onboardConfigStatus = "verified"
+	configCreated   configBootstrapStatus = "created"
+	configRecovered configBootstrapStatus = "recovered"
+	configVerified  configBootstrapStatus = "verified"
 )
 
 type commandRunner interface {

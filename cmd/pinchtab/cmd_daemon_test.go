@@ -29,12 +29,12 @@ func TestEnsureOnboardConfigCreatesDefaultConfig(t *testing.T) {
 	t.Setenv("PINCHTAB_TOKEN", "")
 	t.Setenv("PINCHTAB_BIND", "")
 
-	gotPath, cfg, status, err := ensureOnboardConfig(false)
+	gotPath, cfg, status, err := ensureDaemonConfig(false)
 	if err != nil {
-		t.Fatalf("ensureOnboardConfig returned error: %v", err)
+		t.Fatalf("ensureDaemonConfig returned error: %v", err)
 	}
-	if status != onboardConfigCreated {
-		t.Fatalf("status = %q, want %q", status, onboardConfigCreated)
+	if status != configCreated {
+		t.Fatalf("status = %q, want %q", status, configCreated)
 	}
 	if gotPath != configPath {
 		t.Fatalf("config path = %q, want %q", gotPath, configPath)
@@ -82,12 +82,12 @@ func TestEnsureOnboardConfigRecoversExistingSecuritySettings(t *testing.T) {
 		t.Fatalf("writing config file: %v", err)
 	}
 
-	_, cfg, status, err := ensureOnboardConfig(false)
+	_, cfg, status, err := ensureDaemonConfig(false)
 	if err != nil {
-		t.Fatalf("ensureOnboardConfig returned error: %v", err)
+		t.Fatalf("ensureDaemonConfig returned error: %v", err)
 	}
-	if status != onboardConfigRecovered {
-		t.Fatalf("status = %q, want %q", status, onboardConfigRecovered)
+	if status != configRecovered {
+		t.Fatalf("status = %q, want %q", status, configRecovered)
 	}
 	if cfg.Bind != "127.0.0.1" {
 		t.Fatalf("bind = %q, want 127.0.0.1", cfg.Bind)
