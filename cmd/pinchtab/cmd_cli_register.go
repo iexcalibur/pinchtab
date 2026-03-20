@@ -43,9 +43,11 @@ func registerBrowserCommands() {
 		dialogCmd,
 		consoleCmd,
 		errorsCmd,
+		clipboardCmd,
 	)
 
 	tabsCmd.AddCommand(tabNewCmd, tabCloseCmd)
+	clipboardCmd.AddCommand(clipboardReadCmd, clipboardWriteCmd, clipboardCopyCmd, clipboardPasteCmd)
 	keyboardCmd.AddCommand(keyboardTypeCmd, keyboardInsertTextCmd)
 	dialogCmd.AddCommand(dialogAcceptCmd, dialogDismissCmd)
 
@@ -86,6 +88,7 @@ func registerBrowserCommands() {
 		dialogCmd,
 		consoleCmd,
 		errorsCmd,
+		clipboardCmd,
 	)
 }
 

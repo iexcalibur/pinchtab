@@ -26,6 +26,7 @@ type Handlers struct {
 	IntentCache  *semantic.IntentCache
 	Recovery     *semantic.RecoveryEngine
 	Router       *engine.Router // optional; nil ⇒ chrome-only
+	clipboard    clipboardStore
 }
 
 func New(b bridge.BridgeAPI, cfg *config.RuntimeConfig, p bridge.ProfileService, d *dashboard.Dashboard, o bridge.OrchestratorService) *Handlers {
@@ -146,6 +147,10 @@ func (h *Handlers) RegisterRoutes(mux *http.ServeMux, doShutdown func()) {
 	mux.HandleFunc("GET /screencast/tabs", h.HandleScreencastAll)
 	mux.HandleFunc("POST /tabs/{id}/evaluate", h.HandleTabEvaluate)
 	mux.HandleFunc("POST /evaluate", h.HandleEvaluate)
+	mux.HandleFunc("GET /clipboard/read", h.HandleClipboardRead)
+	mux.HandleFunc("POST /clipboard/write", h.HandleClipboardWrite)
+	mux.HandleFunc("POST /clipboard/copy", h.HandleClipboardCopy)
+	mux.HandleFunc("GET /clipboard/paste", h.HandleClipboardPaste)
 	mux.HandleFunc("GET /network", h.HandleNetwork)
 	mux.HandleFunc("GET /network/stream", h.HandleNetworkStream)
 	mux.HandleFunc("GET /network/{requestId}", h.HandleNetworkByID)
